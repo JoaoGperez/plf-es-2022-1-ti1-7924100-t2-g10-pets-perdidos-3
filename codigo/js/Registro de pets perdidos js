@@ -1,0 +1,78 @@
+function leDados () {
+    let strDados = localStorage.getItem('db');
+    let objDados = {};
+
+    if (strDados) {
+        objDados = JSON.parse (strDados);
+    }
+    else {
+        objDados = { contatos: [
+                        { raca: "pastor alemão", idade: "5", descricao:" askdjashjkasha", nome:"rex"}
+       ]}
+    }
+
+    return objDados;
+}
+
+function salvaDados (dados) {
+    localStorage.setItem ('db', JSON.stringify (dados));
+}
+
+function incluirContato (){
+    // Ler os dados do localStorage
+    let objDados = leDados();
+
+    // Incluir um novo contato
+    
+    let varespecie = document.getElementById ('campoespecie').value;
+    let varraca = document.getElementById ('camporaca').value;
+    let varnome = document.getElementById ('camponome').value;
+    let varidade = document.getElementById ('campoidade').value;
+    let varfoto = document.getElementById ('campofoto').value;
+    let vardescricao = document.getElementById ('campodescricao').value;
+   // let varfoto = document.getElementById ('img').value;
+    let varcontato = document.getElementById ('campocontato').value;
+    
+    let novoContato = {
+       Especie: varespecie,
+        raca: varraca,
+        nome: varnome,
+        idade: varidade,
+        foto: varfoto,
+        descricao: vardescricao,
+        
+        contato: varcontato,
+    };
+
+    objDados.contatos.push (novoContato);
+
+    // Salvar os dados no localStorage novamente
+    salvaDados (objDados);
+
+    // Atualiza os dados da tela
+    imprimeDados ();
+}
+    //imprime os dados da tela
+function imprimeDados () {
+    let tela = document.getElementById('tela');
+    let strHtml = '';
+    let objDados = leDados ();
+    
+    for (i=0; i< objDados.contatos.length; i++) {
+        strHtml += `<p>
+        -Especie: ${objDados.contatos[i].Especie}
+         -Raça: ${objDados.contatos[i].raca}
+         -Nome: ${objDados.contatos[i].nome}
+         -Idade: ${objDados.contatos[i].idade}
+         -Foto: ${objDados.contatos[i].foto}
+         -Descrição: ${objDados.contatos[i].descricao}
+         -Contato do responsavel ${objDados.contatos[i].contato}</p>`
+    }
+    
+    
+    tela.innerHTML = strHtml;
+}
+
+// Configura os botões
+document.getElementById ('btnCarregaDados').addEventListener ('click', imprimeDados);
+document.getElementById ('btnIncluirContato').addEventListener ('click', incluirContato);
